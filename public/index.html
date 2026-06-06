@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeSera</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Figtree:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ══════════ SIDEBAR ══════════ -->
+  <aside id="sidebar">
+    <div class="sb-top">
+      <div class="logo">
+        <span class="logo-hex">⬡</span>
+        <span class="logo-name">CodeSera</span>
+      </div>
+      <button id="newChatBtn" class="icon-btn new-btn" title="New Course">
+        <svg width="14" height="14" viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div class="sb-search">
+      <svg class="srch-icon" width="13" height="13" viewBox="0 0 13 13">
+        <circle cx="5.5" cy="5.5" r="4" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M8.5 8.5L12 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <input id="searchInput" type="text" placeholder="Search pages…">
+    </div>
+
+    <div class="sb-body">
+      <div class="sb-section">
+        <div class="sb-label-row">
+          <span class="sb-label">Courses</span>
+          <select id="sortSelect" class="sort-sel" title="Sort courses">
+            <option value="updated">Recent</option>
+            <option value="created">Added</option>
+            <option value="title">A–Z</option>
+          </select>
+        </div>
+        <div id="chatList"><p class="empty-hint">No courses yet</p></div>
+      </div>
+
+      <div class="sb-section connectors-wrap">
+        <div class="sb-label">Connectors</div>
+        <div id="folderPickerBtn" class="connector-card">
+          <span class="conn-icon">⚡</span>
+          <div class="conn-info">
+            <span class="conn-name">Node Server</span>
+            <span id="folderName" class="conn-status">Run: node server.js</span>
+          </div>
+          <span class="conn-plus">↻</span>
+        </div>
+        <div id="schedulerConnector" class="connector-card">
+          <span class="conn-icon">📅</span>
+          <div class="conn-info">
+            <span class="conn-name">Scheduler</span>
+            <span id="connectorStatus" class="conn-status">Click to configure</span>
+          </div>
+          <span class="conn-plus">+</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════ MAIN ══════════ -->
+  <main id="main">
+
+    <!-- TOPBAR -->
+    <div id="topbar">
+      <div class="tb-left">
+        <button id="sidebarToggle" class="icon-btn sb-tog">
+          <svg width="15" height="11" viewBox="0 0 15 11"><path d="M0 1h15M0 5.5h15M0 10h15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+        <input id="pageTitle" class="title-field" value="New Course" readonly title="Double-click to edit">
+      </div>
+      <div class="tb-right">
+        <button id="apiKeyBtn" class="tb-key-btn" title="Configure API Keys">🔑 API Keys</button>
+      </div>
+    </div>
+
+    <!-- CHAT AREA -->
+    <div id="chatArea">
+      <!-- Welcome / empty state -->
+      <div id="welcome">
+        <div class="wlc-glow"></div>
+        <div class="wlc-inner">
+          <span class="wlc-icon">⬡</span>
+          <h1 class="wlc-heading">What will you learn today?</h1>
+          <div class="tw-line">
+            <span id="twText"></span><span class="tw-cur">|</span>
+          </div>
+          <div id="chips" class="chips">
+            <button class="chip" data-text="Teach me Python Programming from scratch">🐍 Python</button>
+            <button class="chip" data-text="Create C++ problems for competitive programming">⚡ C++</button>
+            <button class="chip" data-text="Teach me C# for Game Development with Unity">🎮 C# Game Dev</button>
+            <button class="chip" data-text="Teach me Data Structures and Algorithms">🌳 DSA</button>
+            <button class="chip" data-text="Teach me Math for Algorithms and Computer Science">🔢 Math for CS</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div id="messages"></div>
+    </div>
+
+    <!-- INPUT ZONE -->
+    <div id="inputZone">
+      <!-- Level controls -->
+      <div class="ctrl-row">
+        <div class="lvl-pair">
+          <span class="lvl-lbl">From</span>
+          <select id="levelFrom" class="mini-sel">
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+        <span class="lvl-arrow">→</span>
+        <div class="lvl-pair">
+          <span class="lvl-lbl">To</span>
+          <select id="levelTo" class="mini-sel">
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+            <option value="master">Master</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Attach dropdown -->
+      <div id="attachMenu" class="attach-menu hidden">
+        <button class="at-opt" data-action="file">
+          <svg width="14" height="14" viewBox="0 0 14 14"><rect x="1" y="1" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4 5h6M4 7.5h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Add files or documents
+        </button>
+        <button class="at-opt" data-action="url">
+          <svg width="14" height="14" viewBox="0 0 14 14"><path d="M5.5 8.5a3 3 0 004.243 0l2-2a3 3 0 00-4.243-4.243L6.414 3.35" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M8.5 5.5a3 3 0 00-4.243 0l-2 2a3 3 0 004.243 4.243L7.586 10.65" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Add URL / link
+        </button>
+      </div>
+
+      <!-- File chips -->
+      <div id="filesPreview" class="files-row hidden"></div>
+
+      <!-- Target Application field (hidden by default) -->
+      <div id="targetAppRow" class="target-app-row hidden">
+        <span class="target-app-label">🎯 Target Application</span>
+        <input id="targetAppInput" class="target-app-input" type="text"
+          placeholder="e.g. web development, data science, game dev, interviews…"
+          maxlength="80">
+        <button id="targetAppClear" class="target-app-clear" title="Clear">×</button>
+      </div>
+
+      <!-- Customization Checklist Panel (hidden by default) -->
+      <div id="checklistPanel" class="checklist-panel hidden">
+        <div class="checklist-title">✨ Course Customization</div>
+        <div class="checklist-grid">
+          <label class="ck-item" title="Assumes zero prior knowledge — explains every concept from scratch">
+            <input type="checkbox" id="ck-newbie"> <span class="ck-icon">🐣</span>
+            <span class="ck-text"><b>Newbie mode</b><br><small>Zero prior knowledge assumed</small></span>
+          </label>
+          <label class="ck-item" title="Simple language, fun examples, no jargon">
+            <input type="checkbox" id="ck-teen"> <span class="ck-icon">🧒</span>
+            <span class="ck-text"><b>Teach like I'm 13</b><br><small>Simple words, fun examples</small></span>
+          </label>
+          <label class="ck-item" title="More code, less prose — for hands-on learners">
+            <input type="checkbox" id="ck-codeheavy"> <span class="ck-icon">💻</span>
+            <span class="ck-text"><b>Heavy on code</b><br><small>Maximize code examples</small></span>
+          </label>
+          <label class="ck-item" title="Every section builds toward a real project outcome">
+            <input type="checkbox" id="ck-projectfocus"> <span class="ck-icon">🏗️</span>
+            <span class="ck-text"><b>Project-focused</b><br><small>Build toward real outcomes</small></span>
+          </label>
+          <label class="ck-item" title="Adds 'By the end of this lesson you will...' to each lesson">
+            <input type="checkbox" id="ck-objectives" checked> <span class="ck-icon">🎯</span>
+            <span class="ck-text"><b>Learning objectives</b><br><small>Clear goals per lesson</small></span>
+          </label>
+          <label class="ck-item" title="Adds 'Many people think X but actually Y' callouts">
+            <input type="checkbox" id="ck-misconceptions" checked> <span class="ck-icon">💡</span>
+            <span class="ck-text"><b>Misconception busters</b><br><small>Correct common mistakes</small></span>
+          </label>
+          <label class="ck-item" title="Each section starts simple then gets more realistic">
+            <input type="checkbox" id="ck-ramp"> <span class="ck-icon">📈</span>
+            <span class="ck-text"><b>Difficulty ramp</b><br><small>Simple → realistic examples</small></span>
+          </label>
+          <label class="ck-item" title="Real-world analogies before every concept">
+            <input type="checkbox" id="ck-analogies" checked> <span class="ck-icon">🌍</span>
+            <span class="ck-text"><b>Real-world analogies</b><br><small>Relatable before technical</small></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Input bar -->
+      <div class="input-bar" id="inputBar">
+        <button id="targetAppBtn" class="at-btn" title="Target application" data-panel="targetAppRow" style="font-size:14px">🎯</button>
+        <button id="checklistBtn" class="at-btn" title="Customize generation" data-panel="checklistPanel" style="font-size:14px">✨</button>
+        <button id="attachBtn" class="at-btn" title="Attach">
+          <svg width="14" height="14" viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <textarea id="msgInput" placeholder="Describe what you want to learn…" rows="1"></textarea>
+        <div class="bar-right">
+          <select id="modelSelect" class="bar-sel">
+            <option value="claude">Claude</option>
+            <option value="chatgpt">ChatGPT</option>
+            <option value="gemini">Gemini</option>
+            <option value="grok">Grok</option>
+            <option value="openrouter">OpenRouter</option>
+            <option value="deepseek">DeepSeek</option>
+            <option value="glm">GLM-4</option>
+            <option value="other">Other</option>
+          </select>
+          <select id="styleSelect" class="bar-sel">
+            <option value="concise">Concise</option>
+            <option value="explanatory">Explanatory</option>
+            <option value="interactive">Interactive</option>
+            <option value="formal">Formal</option>
+          </select>
+          <button id="sendBtn" class="send-btn">
+            <svg width="15" height="15" viewBox="0 0 15 15"><path d="M1.5 13.5L13.5 7.5L1.5 1.5V6L9.5 7.5L1.5 9V13.5Z" fill="currentColor"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <input type="file" id="fileInput" multiple accept=".pdf,.txt,.md,.doc,.docx,.png,.jpg,.jpeg" hidden>
+    </div>
+
+  </main>
+</div>
+
+<!-- ══════════ SCHEDULER MODAL ══════════ -->
+<div id="schedulerModal" class="overlay hidden">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="modal-ttl"><span>📅</span> Scheduler</div>
+      <button id="modalClose" class="icon-btn">
+        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-bd">
+      <div class="mfield">
+        <label class="mlbl">Lesson Time</label>
+        <input type="time" id="scheduleTime" class="m-input" value="09:00">
+      </div>
+      <div class="mfield">
+        <label class="mlbl">Repeat On</label>
+        <div id="daysGrid" class="days-grid"></div>
+      </div>
+      <div class="mfield">
+        <label class="mlbl">Notification Message</label>
+        <input type="text" id="scheduleMessage" class="m-input" placeholder="e.g. Time to study Python! 🐍" maxlength="120">
+      </div>
+      <div class="modal-note">🔔 Browser will send this notification at the scheduled time each selected day. Keep the app tab open for notifications to fire.</div>
+    </div>
+    <div class="modal-ft">
+      <button id="modalCancel" class="btn-sec">Cancel</button>
+      <button id="modalSave" class="btn-pri">Save Schedule</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ API KEY MODAL ══════════ -->
+<div id="apiModal" class="overlay hidden">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="modal-ttl"><span>🔑</span> API Configuration</div>
+      <button id="apiModalClose" class="icon-btn">
+        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-bd">
+      <div class="mfield">
+        <label class="mlbl">Provider / Model</label>
+        <select id="apiProviderSel" class="m-input m-select">
+          <option value="openrouter">OpenRouter (access all models)</option>
+          <option value="claude">Anthropic — Claude</option>
+          <option value="chatgpt">OpenAI — ChatGPT</option>
+          <option value="gemini">Google — Gemini</option>
+          <option value="deepseek">DeepSeek</option>
+          <option value="grok">xAI — Grok</option>
+          <option value="glm">Zhipu AI — GLM-4</option>
+          <option value="other">Other (Custom Base URL)</option>
+        </select>
+      </div>
+      <div class="mfield" id="orModelField">
+        <label class="mlbl" id="modelInputLabel">Model ID (default: openrouter/auto)</label>
+        <input id="orModelInput" class="m-input" type="text" placeholder="Leave blank for default">
+      </div>
+      <div class="mfield hidden" id="otherFields">
+        <label class="mlbl">Base URL <span style="color:var(--red)">*</span></label>
+        <input id="otherBaseUrl" class="m-input" type="text" placeholder="https://api.example.com/v1/chat/completions">
+      </div>
+      <div class="mfield">
+        <label class="mlbl">API Key</label>
+        <div style="position:relative">
+          <input id="apiKeyInput" class="m-input" type="password" placeholder="Paste your API key here…" autocomplete="off">
+          <button id="apiKeyToggle" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--txt3);cursor:pointer;font-size:13px">Show</button>
+        </div>
+      </div>
+      <div id="apiProviderHint" class="modal-note"></div>
+      <div class="mfield" style="margin-bottom:0">
+        <label class="mlbl">Saved Keys</label>
+        <div id="savedKeysList" class="saved-keys-list"></div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button id="apiModalCancel" class="btn-sec">Cancel</button>
+      <button id="apiModalSave" class="btn-pri">Save Key</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ GENERATION OVERLAY ══════════ -->
+<div id="genOverlay" class="gen-overlay hidden">
+  <div class="gen-popup">
+    <div class="gen-header">
+      <div class="gen-spinner"></div>
+      <div class="gen-info">
+        <div id="genTitle" class="gen-title">Building course…</div>
+        <div id="genSub" class="gen-sub">Starting…</div>
+      </div>
+      <button id="genStopBtn" class="gen-stop">⏹ Stop</button>
+    </div>
+    <div class="gen-bar-wrap">
+      <div id="genBar" class="gen-bar"></div>
+    </div>
+    <div id="genSteps" class="gen-steps"></div>
+  </div>
+</div>
+
+
+
+<!-- ══════════ WELCOME TUTORIAL ══════════ -->
+<div id="tutorialModal" class="overlay hidden">
+  <div class="modal tut-modal">
+    <div class="modal-hd">
+      <div class="modal-ttl"><span>⬡</span> Welcome to CodeSera</div>
+    </div>
+    <div class="modal-bd tut-body">
+      <div class="tut-steps">
+        <div class="tut-step">
+          <div class="tut-step-icon">🔑</div>
+          <div class="tut-step-body">
+            <div class="tut-step-title">1. Add your API Key</div>
+            <div class="tut-step-desc">Click <b>🔑 API Keys</b> in the top-right. Paste your key from OpenRouter, Gemini, ChatGPT or any supported provider. Free options: <b>Gemini Flash</b> or <b>Groq</b>.</div>
+          </div>
+        </div>
+        <div class="tut-step">
+          <div class="tut-step-icon">🎓</div>
+          <div class="tut-step-body">
+            <div class="tut-step-title">2. Generate a course</div>
+            <div class="tut-step-desc">Type what you want to learn (e.g. <em>"Teach me Python"</em>), set your level, then hit Send. Lessons are generated and saved automatically.</div>
+          </div>
+        </div>
+        <div class="tut-step">
+          <div class="tut-step-icon">✨</div>
+          <div class="tut-step-body">
+            <div class="tut-step-title">3. Customize (optional)</div>
+            <div class="tut-step-desc">Use <b>✨</b> to turn on Newbie mode, heavy code, analogies and more. Use <b>🎯</b> to set a target like <em>"web development"</em> for tailored examples.</div>
+          </div>
+        </div>
+        <div class="tut-step">
+          <div class="tut-step-icon">📖</div>
+          <div class="tut-step-body">
+            <div class="tut-step-title">4. Open lessons</div>
+            <div class="tut-step-desc">Click <b>Open</b> on any lesson. Inside each lesson you'll find a <b>💬</b> chat button for questions and <b>🤖 Tell me more</b> to expand any section.</div>
+          </div>
+        </div>
+      </div>
+      <div class="tut-footer">
+        <label class="tut-never">
+          <input type="checkbox" id="tutNeverShow"> Don't show again
+        </label>
+        <button id="tutCloseBtn" class="btn btn-primary">Get Started →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PROJECTS MODAL ══════════ -->
+<div id="projectsModal" class="overlay hidden">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-hd">
+      <div class="modal-ttl"><span>🛠️</span> Projects — <span id="projectsModalTitle" style="color:var(--acc2)"></span></div>
+      <button id="projectsModalClose" class="icon-btn">
+        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-bd" style="padding:10px 12px 16px">
+      <p style="font-size:12.5px;color:var(--txt3);margin-bottom:10px">Hands-on projects tailored to your course level. Click any project to generate a full guided lesson.</p>
+      <div id="projectsList" class="qpl-list"></div>
+      <button id="projectsMoreBtn" class="btn btn-ghost" style="width:100%;margin-top:10px;font-size:12px">
+        ✨ Generate more projects
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ QUIZ PICKER MODAL ══════════ -->
+<div id="quizPickerModal" class="overlay hidden">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-hd">
+      <div class="modal-ttl"><span>🧠</span> Quiz — <span id="quizPickerTitle" style="color:var(--acc2)"></span></div>
+      <button id="quizPickerClose" class="icon-btn">
+        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-bd" style="padding:10px 12px 16px">
+      <p style="font-size:12.5px;color:var(--txt3);margin-bottom:10px">Select a lesson to start a quiz. AI generates unique questions each time.</p>
+      <div id="quizLessonList" class="qpl-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ QUIZ RUNNER MODAL ══════════ -->
+<div id="quizRunnerModal" class="overlay hidden">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-hd">
+      <div class="modal-ttl">
+        <span>🧠</span>
+        <span id="quizRunnerTitle" style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-left:auto">
+        <span id="quizProgress" style="font-size:11px;color:var(--txt3)"></span>
+        <button id="quizRunnerClose" class="icon-btn">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="gen-bar-wrap"><div id="quizProgressBar" class="gen-bar" style="transition:width .4s ease"></div></div>
+    <div id="quizRunnerBody" class="modal-bd" style="padding:20px 18px 18px;min-height:200px"></div>
+  </div>
+</div>
+
+<script src="assets.js"></script>
+<script src="api.js"></script>
+<script src="renderer.js"></script>
+<script src="agents.js"></script>
+<script src="quiz.js"></script>
+<script src="projects.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

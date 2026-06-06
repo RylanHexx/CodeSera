@@ -1,0 +1,13 @@
+
+courses/
+src/assets.js
+node_modules/
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+.env
+.env.local

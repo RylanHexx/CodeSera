@@ -1,0 +1,25 @@
+{
+  "name": "codesera",
+  "version": "1.0.0",
+  "description": "AI-powered interactive course builder \u2014 generates multi-lesson courses from a single prompt",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "node scripts/build-assets.js",
+    "dev": "node scripts/build-assets.js && node server.js"
+  },
+  "keywords": [
+    "ai",
+    "education",
+    "course-builder",
+    "llm",
+    "learning",
+    "openrouter",
+    "gemini"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}
