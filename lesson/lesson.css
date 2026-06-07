@@ -10,6 +10,7 @@
 
 /* ── 2. CSS VARIABLES (Design Tokens) ─────────────────────── */
 :root {
+  color-scheme: dark;
   /* Sidebar */
   --sidebar-bg:       #0f1117;
   --sidebar-width:    270px;
@@ -20,12 +21,12 @@
   --sidebar-border:   #1e2336;
 
   /* Main content */
-  --bg:               #f7f8fc;
-  --surface:          #ffffff;
-  --border:           #e4e9f2;
-  --text:             #1a1d2e;
-  --text-muted:       #6b7280;
-  --text-light:       #9ca3af;
+  --bg:               #0d1117;
+  --surface:          #111827;
+  --border:           #1e2336;
+  --text:             #e2e8f0;
+  --text-muted:       #94a3b8;
+  --text-light:       #64748b;
 
   /* Accent palette */
   --accent:           #2563eb;
@@ -68,7 +69,7 @@ html { scroll-behavior: smooth; font-size: 16px; }
 
 body {
   font-family: var(--font-body);
-  background: var(--bg);
+  background: #0f1117;
   color: var(--text);
   display: flex;
   min-height: 100vh;
@@ -106,6 +107,8 @@ img { max-width: 100%; }
   max-width: 860px;
   margin: 0 auto;
   padding: 48px 40px 80px;
+  background: #0f1117 !important;
+  min-height: 100vh;
 }
 
 /* ── 5. SIDEBAR HEADER ────────────────────────────────────── */
@@ -485,10 +488,10 @@ img { max-width: 100%; }
 
 .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
 
-.callout.info    { background: #eff6ff; border-color: var(--accent); color: #1e40af; }
-.callout.tip     { background: var(--green-light); border-color: var(--green); color: #065f46; }
-.callout.warning { background: var(--yellow-light); border-color: var(--yellow); color: #92400e; }
-.callout.danger  { background: var(--red-light); border-color: var(--red); color: #991b1b; }
+.callout.info    { background: rgba(37,99,235,.12); border-color: #3b82f6; color: #93c5fd; }
+.callout.tip     { background: rgba(16,185,129,.12); border-color: #10b981; color: #6ee7b7; }
+.callout.warning { background: rgba(245,158,11,.12); border-color: #f59e0b; color: #fcd34d; }
+.callout.danger  { background: rgba(239,68,68,.12); border-color: #ef4444; color: #fca5a5; }
 
 .callout strong { font-weight: 700; display: block; margin-bottom: 3px; }
 
@@ -620,7 +623,7 @@ code:not([class]) {
 
 .def-table tbody tr:last-child td { border-bottom: none; }
 
-.def-table tbody tr:nth-child(even) { background: #f9fafc; }
+.def-table tbody tr:nth-child(even) { background: rgba(255,255,255,.04); }
 
 .def-table tbody tr:hover { background: var(--accent-light); }
 
@@ -738,7 +741,7 @@ code:not([class]) {
   color: var(--accent);
 }
 
-.exercise-score span { font-size: 12px; color: #6b7280; display: block; }
+.exercise-score span { font-size: 12px; color: #94a3b8; display: block; }
 
 /* ── MCQ ────────────────────────────────────────────────────── */
 .mcq-card {
@@ -909,7 +912,7 @@ code:not([class]) {
 
 .fill-hint {
   font-size: 12px;
-  color: #4b5563;
+  color: #94a3b8;
   margin-bottom: 10px;
   font-style: italic;
 }
@@ -1021,7 +1024,7 @@ code:not([class]) {
 
 .completion-emoji { font-size: 52px; margin-bottom: 12px; }
 .completion-title { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; }
-.completion-msg   { color: #6b7280; font-size: 14px; }
+.completion-msg   { color: #94a3b8; font-size: 14px; }
 
 /* ── 19. TYPOGRAPHY HELPERS ───────────────────────────────── */
 p { font-size: 15px; color: var(--text-muted); line-height: 1.75; margin-bottom: 14px; }
@@ -1093,19 +1096,62 @@ hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
 
   .sidebar-toggle { display: flex; }
 
-  .main-content { padding: 32px 20px 60px; }
-  .code-block { margin: 16px -4px; border-radius: 6px; }
-  .code-block pre[class*="language-"] { font-size: 12px; padding: 14px 14px; }
+  .main-content { padding: 20px 16px 80px; min-height: 100vh; }
+
+  /* Page header */
+  .page-header { padding: 20px 16px 16px; }
+  .page-title { font-size: 22px; }
+  .page-subtitle { font-size: 12px; }
+  .meta-row { flex-wrap: wrap; gap: 6px; }
+  .meta-item { font-size: 11px; padding: 3px 8px; }
+
+  /* Code blocks */
+  .code-block { margin: 14px 0; border-radius: 6px; }
+  .code-block pre[class*="language-"] { font-size: 12px; padding: 12px; }
   .code-block-header { padding: 7px 12px; }
   ol, ul { padding-left: 18px; }
-  .code-block { overflow-x: auto; }
 
+  /* Exercises */
+  .exercise-section { padding: 16px 14px; }
+  .mcq-options { gap: 8px; }
+  .mcq-option { padding: 10px 12px; font-size: 13px; }
+  .tf-btns { gap: 8px; }
+  .tf-btn { padding: 10px 18px; }
 
-  .page-title { font-size: 26px; }
-
-  .exercise-section { padding: 20px 16px; }
-
+  /* Cards */
   .cards-grid { grid-template-columns: 1fr; }
+  .card { padding: 14px; }
+
+  /* Lesson nav buttons */
+  .lesson-nav { flex-direction: column; gap: 10px; }
+  .lesson-nav-btn { width: 100%; }
+
+  /* Steps */
+  .steps { gap: 14px; }
+
+  /* Table */
+  .def-table { font-size: 12px; }
+  .def-table th, .def-table td { padding: 8px 10px; }
+
+  /* Section */
+  .section { margin-bottom: 28px; }
+  .section-title { font-size: 18px; }
+
+  /* Sidebar toggle button — visible on mobile */
+  .sidebar-toggle {
+    display: flex;
+    position: fixed;
+    top: 12px; left: 12px;
+    z-index: 100;
+    width: 38px; height: 38px;
+    background: var(--sidebar-bg);
+    border: 1px solid var(--sidebar-border);
+    border-radius: 8px;
+    align-items: center; justify-content: center;
+    font-size: 16px; cursor: pointer; color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,.3);
+  }
+  .main-content { padding-top: 64px; }
 }
 
 /* ── 22. ANIMATIONS ───────────────────────────────────────── */

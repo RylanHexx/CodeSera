@@ -5,6 +5,8 @@
    ============================================================ */
 
 :root {
+  color-scheme: light;
+  -webkit-color-scheme: light;
   /* Sidebar */
   --sidebar-bg:       #ede8df;
   --sidebar-width:    270px;
@@ -15,7 +17,7 @@
   --sidebar-border:   #d9d0c4;
 
   /* Main content */
-  --bg:               #F8F4EC;
+  --bg:               #fdf8f3;
   --surface:          #fdfaf5;
   --border:           #ddd5c8;
   --text:             #2c2416;
@@ -63,7 +65,9 @@ html { scroll-behavior: smooth; font-size: 16px; }
 
 body {
   font-family: var(--font-body);
-  background: var(--bg);
+  background: #ede8df;
+  forced-color-adjust: none;
+  -webkit-forced-color-adjust: none;
   color: var(--text);
   display: flex;
   min-height: 100vh;
@@ -101,6 +105,8 @@ img { max-width: 100%; }
   max-width: 860px;
   margin: 0 auto;
   padding: 48px 40px 80px;
+  background: #fdf8f3;
+  min-height: 100vh;
 }
 
 /* ── 5. SIDEBAR HEADER ────────────────────────────────────── */
@@ -493,7 +499,7 @@ img { max-width: 100%; }
   margin: 20px 0;
   border-radius: var(--radius);
   overflow: hidden;
-  border: 1px solid #d9d0c4;
+  border: 1px solid #2a3050;
   box-shadow: var(--shadow);
   max-width: 100%;
   box-sizing: border-box;
@@ -510,7 +516,7 @@ img { max-width: 100%; }
 .code-block-lang {
   font-size: 11px;
   font-family: var(--font-code);
-  color: #7c5cbf;
+  color: #93c5fd;
   text-transform: uppercase;
   letter-spacing: .8px;
   font-weight: 500;
@@ -570,12 +576,12 @@ img { max-width: 100%; }
 /* Inline code */
 code:not([class]) {
   font-family: var(--font-code);
-  background: #ede8df;
-  color: #7c3aed;
+  background: #1e2433;
+  color: #93c5fd;
   padding: 2px 7px;
   border-radius: 5px;
   font-size: .88em;
-  border: 1px solid #d9d0c4;
+  border: 1px solid #2a3050;
   word-break: break-word;
   overflow-wrap: break-word;
   white-space: pre-wrap;
@@ -750,7 +756,7 @@ code:not([class]) {
 
 .mcq-question {
   font-size: 14.5px;
-  color: #e2e8f0;
+  color: #1a1d2e;
   font-weight: 600;
   margin-bottom: 14px;
   line-height: 1.55;
@@ -853,7 +859,7 @@ code:not([class]) {
 
 .fill-question {
   font-size: 14.5px;
-  color: #e2e8f0;
+  color: #1a1d2e;
   font-weight: 600;
   margin-bottom: 14px;
   line-height: 1.6;

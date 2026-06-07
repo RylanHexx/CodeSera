@@ -995,21 +995,75 @@ input,select,textarea { font-family: var(--fn); }
 
 /* ── RESPONSIVE ──────────────────────────────────────── */
 @media (max-width: 680px) {
+  /* ── Sidebar: slide in from left ─────────────────────── */
   #sidebar {
     position: fixed;
     left: 0; top: 0;
     height: 100vh;
     transform: translateX(-100%);
+    transition: transform .25s ease;
     box-shadow: var(--shadow-lg);
+    z-index: 200;
+    width: min(80vw, 300px);
   }
   #sidebar.open { transform: translateX(0); }
   .sb-tog { display: flex !important; }
+
+  /* Backdrop when sidebar open */
+  #sb-backdrop {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 199;
+  }
+  #sb-backdrop.visible { display: block; }
+
+  /* ── Main area ───────────────────────────────────────── */
   #main { width: 100%; }
-  .msg-bubble { max-width: 82%; }
-  .lesson-card { max-width: 88%; }
-  .wlc-heading { font-size: 22px; }
+  #chatArea { padding: 12px; }
+
+  /* ── Welcome screen ──────────────────────────────────── */
+  .wlc-heading { font-size: 20px; }
+  .wlc-sub { font-size: 13px; }
+  .chips { gap: 6px; }
+  .chip { font-size: 11px; padding: 5px 10px; }
+
+  /* ── Messages ────────────────────────────────────────── */
+  .msg-bubble { max-width: 90%; font-size: 13px; }
+  .lesson-card { max-width: 100%; }
+  .lc-head { padding: 12px; }
+  .lc-acts { flex-wrap: wrap; gap: 6px; padding: 10px 12px; }
+  .lbtn { font-size: 11px; padding: 5px 10px; }
+  .cc-lesson { gap: 6px; }
+
+  /* ── Input bar ───────────────────────────────────────── */
+  .bar-row { gap: 6px; }
+  .bar-sel { font-size: 11px; padding: 4px 6px; max-width: 80px; }
+  #levelFrom, #levelTo { font-size: 11px; max-width: 80px; }
+  .at-btn { width: 32px; height: 32px; font-size: 13px; }
+  .send-btn { width: 36px; height: 36px; }
+
+  /* ── Topbar ──────────────────────────────────────────── */
+  .tb-right { gap: 6px; }
+  .tb-key-btn { font-size: 11px; padding: 5px 10px; }
+  #pageTitle { font-size: 13px; max-width: 140px; }
+
+  /* ── Checklist grid ──────────────────────────────────── */
+  .checklist-grid { grid-template-columns: 1fr; }
+  .ck-item { padding: 8px 10px; }
+
+  /* ── Modals ──────────────────────────────────────────── */
+  .modal { width: calc(100vw - 24px); max-height: 92vh; }
+  .tut-modal { max-width: calc(100vw - 24px); }
+  .tut-step { padding: 10px 12px; gap: 10px; }
+  .tut-step-icon { font-size: 18px; }
+}
+
+@media (max-width: 400px) {
   .bar-sel { display: none; }
-  #levelFrom, #levelTo { font-size: 11px; }
+  #pageTitle { max-width: 100px; }
+  .lc-acts { gap: 4px; }
+  .lbtn { font-size: 10px; padding: 4px 8px; }
 }
 
 /* ── AGENT PROGRESS CARD ─────────────────────────────── */

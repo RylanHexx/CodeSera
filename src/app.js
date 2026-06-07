@@ -1349,7 +1349,15 @@ function wireEvents() {
   }
 
   /* ─ Mobile sidebar toggle ─ */
-  sidebarToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+  sidebarToggle.addEventListener('click', () => {
+    const open = sidebar.classList.toggle('open');
+    const bd = document.getElementById('sb-backdrop');
+    if (bd) bd.classList.toggle('visible', open);
+  });
+  document.getElementById('sb-backdrop')?.addEventListener('click', () => {
+    sidebar?.classList.remove('open');
+    document.getElementById('sb-backdrop')?.classList.remove('visible');
+  });
 
   /* ─ API Key modal ─ */
   initApiModal();

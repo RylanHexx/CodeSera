@@ -74,11 +74,13 @@ function renderLesson(content, meta, prismLang) {
   const exerciseCount = (safeContent.match(/class="exercise-section"/gi) || []).length;
 
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
   <title>${esc(meta.courseTitle)} — ${esc(meta.lessonTitle)}</title>
+  <style>html,body{background:#0d1117 !important;color:#e2e8f0 !important;}</style>
   <style id="lf-theme">${LESSON_CSS}</style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
@@ -124,9 +126,16 @@ if(typeof Prism !== 'undefined') {
   var themeEl   = document.getElementById('lf-theme');
 
   function applyTheme(isLight) {
-    if (!themeEl) return;
-    themeEl.textContent = isLight ? LIGHT_CSS : DARK_CSS;
+    var html = document.documentElement;
+    // Swap full CSS (dark/light are complete standalone files)
+    if (themeEl) themeEl.textContent = isLight ? LIGHT_CSS : DARK_CSS;
+    // Override html + body directly so no browser can override
+    var bgColor = isLight ? '#ede8df' : '#0d1117';
+    html.style.setProperty('background', bgColor, 'important');
+    html.style.setProperty('color-scheme', isLight ? 'light' : 'dark');
+    document.body.style.setProperty('background', bgColor, 'important');
     document.body.classList.toggle('lf-light', isLight);
+    html.setAttribute('data-theme', isLight ? 'light' : 'dark');
     if (btn) {
       btn.textContent       = isLight ? '🌙' : '☀️';
       btn.title             = isLight ? 'Switch to Dark' : 'Switch to Light';
@@ -358,11 +367,29 @@ const NAV_LOADER_INLINE = `<script>
     markActive(root);
     wireToggles(root);
     wireLinks(root);
+    // Sidebar overlay toggle for mobile — always query from document root
     var toggle = document.querySelector('.sidebar-toggle');
-    if (toggle) toggle.addEventListener('click', function(){
-      var aside = (root||document).querySelector('aside.sidebar');
-      if (aside) aside.classList.toggle('open');
-    });
+    if (toggle) {
+      // Remove any previous listener to avoid double-binding
+      var newToggle = toggle.cloneNode(true);
+      toggle.parentNode.replaceChild(newToggle, toggle);
+      newToggle.addEventListener('click', function(){
+        var aside = document.querySelector('aside.sidebar, #sharedSidebar');
+        if (aside) {
+          aside.classList.toggle('open');
+          // Show/hide overlay backdrop
+          var bd = document.getElementById('lf-sb-backdrop');
+          if (!bd) {
+            bd = document.createElement('div');
+            bd.id = 'lf-sb-backdrop';
+            bd.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:89;display:none';
+            bd.addEventListener('click', function(){ aside.classList.remove('open'); bd.style.display='none'; });
+            document.body.appendChild(bd);
+          }
+          bd.style.display = aside.classList.contains('open') ? 'block' : 'none';
+        }
+      });
+    }
   }
 
   // Try fetch nav.html for full lesson list (only from course root, not subfolders)
@@ -445,11 +472,13 @@ function renderIndex(plan, lessonTitles) {
   }).join('');
 
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
   <title>${esc(plan.courseTitle)}</title>
+  <style>html,body{background:#0d1117 !important;color:#e2e8f0 !important;}</style>
   <style id="lf-theme">${LESSON_CSS}</style>
 </head>
 <body>
