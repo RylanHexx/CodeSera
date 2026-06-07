@@ -18,7 +18,6 @@ It does'nt generate HTML, CSS or other components from scratch making it highly 
 
 ---
 
----
 ![Screenshot](./screenshots/lesson-ui.PNG)
 
 ![Screenshot](./screenshots/main.PNG)
